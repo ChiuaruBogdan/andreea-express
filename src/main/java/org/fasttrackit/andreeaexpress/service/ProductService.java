@@ -3,11 +3,14 @@ package org.fasttrackit.andreeaexpress.service;
 import org.fasttrackit.andreeaexpress.domain.Product;
 import org.fasttrackit.andreeaexpress.persistance.ProductRepository;
 import org.fasttrackit.andreeaexpress.transfer.product.SaveProductRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
 
@@ -17,6 +20,7 @@ public class ProductService {
     }
 
     public Product createProduct(SaveProductRequest request) {
+        LOGGER.info("Creating product: {}", request);
 
         Product product = new Product();
         product.setName(request.getName());
