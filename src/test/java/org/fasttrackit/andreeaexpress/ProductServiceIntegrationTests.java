@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.TransactionSystemException;
 
 
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -43,4 +44,13 @@ public class ProductServiceIntegrationTests {
     }
 
 
+
+//    test pentru requesturi invalide
+    @Test (expected = TransactionSystemException.class)
+    public void testCreateProduct_whenInvalidRequest_thenThrowException(){
+        SaveProductRequest request = new SaveProductRequest();
+
+        productService.createProduct(request);
+
+    }
 }
