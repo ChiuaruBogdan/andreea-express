@@ -2,10 +2,14 @@ package org.fasttrackit.andreeaexpress.service;
 
 import org.fasttrackit.andreeaexpress.domain.Product;
 import org.fasttrackit.andreeaexpress.persistance.ProductRepository;
+import org.fasttrackit.andreeaexpress.transfer.product.GetProductsRequest;
 import org.fasttrackit.andreeaexpress.transfer.product.SaveProductRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,13 +33,41 @@ public class ProductService {
         product.setQuantity(request.getQuantity());
         product.setImagePath(request.getImagePath());
 
-       return productRepository.save(product);
+        return productRepository.save(product);
     }
 
-    public Product getProduct(long id){
-        LOGGER.info("Retrieving product {}" + id);
+    public Product getProduct(long id) {
+        LOGGER.info("Retrieving product {}", id);
         return productRepository.findById(id)
-               .orElseThrow(() -> new RuntimeException("Product" + id + "not found"));
+                .orElseThrow(() -> new RuntimeException("Product" + id + "not found"));
 
+    }
+
+    public Page<Product> getProduct(GetProductsRequest request, Pageable pageable) {
+        LOGGER.info("Retrieving products: {}", request);
+
+        if (request != null && request.getPartialName() != null && request.getMinimumQuantity() != null) {
+            return productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(),
+                    request.getMinimumQuantity(), pageable);
+        } else if (request != null && request.getPartialName() != null) {
+            return productRepository.findByNameContaining(
+                    request.getPartialName(), pageable);
+        }else {
+            return productRepository.findAll(pageable);
+        }
+    }
+
+    public Product updateProduct(long id, SaveProductRequest request) {
+        LOGGER.info("Updating product {}: {}", id, request);
+        Product product = getProduct(id);
+        BeanUtils.copyProperties(request, product);
+
+        return productRepository.save(product);
+
+    }
+
+    public void deleteProduct(long id) {
+        LOGGER.info("Deleting product {}", id);
+        productRepository.deleteById(id);
     }
 }
