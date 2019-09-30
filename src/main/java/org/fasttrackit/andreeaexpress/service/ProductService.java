@@ -1,6 +1,7 @@
 package org.fasttrackit.andreeaexpress.service;
 
 import org.fasttrackit.andreeaexpress.domain.Product;
+import org.fasttrackit.andreeaexpress.exception.ResourceNotFoundException;
 import org.fasttrackit.andreeaexpress.persistance.ProductRepository;
 import org.fasttrackit.andreeaexpress.transfer.product.GetProductsRequest;
 import org.fasttrackit.andreeaexpress.transfer.product.SaveProductRequest;
@@ -39,11 +40,11 @@ public class ProductService {
     public Product getProduct(long id) {
         LOGGER.info("Retrieving product {}", id);
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product" + id + "not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product" + id + "not found"));
 
     }
 
-    public Page<Product> getProduct(GetProductsRequest request, Pageable pageable) {
+    public Page<Product> getProducts(GetProductsRequest request, Pageable pageable) {
         LOGGER.info("Retrieving products: {}", request);
 
         if (request != null && request.getPartialName() != null && request.getMinimumQuantity() != null) {
