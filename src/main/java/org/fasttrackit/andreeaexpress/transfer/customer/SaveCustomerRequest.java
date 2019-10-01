@@ -1,37 +1,15 @@
-package org.fasttrackit.andreeaexpress.domain;
+package org.fasttrackit.andreeaexpress.transfer.customer;
+
+public class SaveCustomerRequest {
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-@Entity
-public class Customer {
-
-    @Id
-    @GeneratedValue
-    private long id;
-    @NotNull
-    @Size(min = 1, max = 20)
     private String firstName;
-    @NotNull
-    @Size(min = 1, max = 20)
     private String lastName;
     private String address;
     private String email;
     private String phone;
     private String username;
     private String password;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -89,13 +67,10 @@ public class Customer {
         this.password = password;
     }
 
-
-    //    changed the password field to asterisk
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+        return "CreateCustomerRequest{" +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
