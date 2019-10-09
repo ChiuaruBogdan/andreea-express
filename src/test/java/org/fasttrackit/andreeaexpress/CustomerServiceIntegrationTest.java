@@ -3,6 +3,7 @@ package org.fasttrackit.andreeaexpress;
 
 import org.fasttrackit.andreeaexpress.domain.Customer;
 import org.fasttrackit.andreeaexpress.service.CustomerService;
+import org.fasttrackit.andreeaexpress.steps.CustomerSteps;
 import org.fasttrackit.andreeaexpress.transfer.customer.SaveCustomerRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,19 +23,12 @@ public class CustomerServiceIntegrationTest {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CustomerSteps customerSteps;
     @Test
     public void testCreateCustomer_whenValidRequest_thenReturnCustomer(){
 
-        SaveCustomerRequest request = new SaveCustomerRequest();
-        request.setFirstName("Vasilica");
-        request.setLastName("Ionescu");
-
-        Customer customer = customerService.createCustomer(request);
-
-        assertThat(customer, notNullValue());
-        assertThat(customer.getId(), greaterThan(0L));
-        assertThat(customer.getFirstName(), is(request.getFirstName()));
-        assertThat(customer.getLastName(), is(request.getLastName()));
+        customerSteps.createCustomer();
 
     }
 }
