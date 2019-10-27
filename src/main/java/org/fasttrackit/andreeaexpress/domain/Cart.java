@@ -20,13 +20,13 @@ public class Cart {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products = new HashSet<>();
 
-    public void addToCart(Product product){
+    public void addToCart(Product product) {
         products.add(product);
 
         product.getCarts().add(this);
     }
 
-    public void removeFromCart(Product product){
+    public void removeFromCart(Product product) {
         products.remove(product);
 
         product.getCarts().remove(this);

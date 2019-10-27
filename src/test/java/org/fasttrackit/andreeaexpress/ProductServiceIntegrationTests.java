@@ -2,6 +2,7 @@ package org.fasttrackit.andreeaexpress;
 
 import org.fasttrackit.andreeaexpress.domain.Product;
 import org.fasttrackit.andreeaexpress.service.ProductService;
+import org.fasttrackit.andreeaexpress.steps.ProductSteps;
 import org.fasttrackit.andreeaexpress.transfer.product.SaveProductRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,33 +21,17 @@ import static org.hamcrest.Matchers.greaterThan;
 public class ProductServiceIntegrationTests {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ProductSteps productSteps;
 
     @Test
     public void testCreateProduct_whenValidRequest_thenReturnCreatedProduct() {
 
-        createProduct();
+        productSteps.createProduct();
 
     }
 
-    private Product createProduct() {
-        SaveProductRequest request = new SaveProductRequest();
-        request.setName("Smartwatch");
-        request.setDescription("A piece of technology that you can wear on your wrist.");
-        request.setPrice(1400);
-        request.setQuantity(100);
 
-
-        Product product = productService.createProduct(request);
-
-        assertThat(product, notNullValue());
-        assertThat(product.getId(), notNullValue());
-        assertThat(product.getId(), greaterThan(0L));
-        assertThat(product.getName(), is(request.getName()));
-        assertThat(product.getDescription(), is(request.getDescription()));
-        assertThat(product.getQuantity(), is(request.getQuantity()));
-
-        return product;
-    }
 
 
     //    test pentru requesturi invalide
@@ -60,7 +45,7 @@ public class ProductServiceIntegrationTests {
 
     @Test
     public void testGetProduct_whenExistingEntity_thenReturnProduct() {
-        Product createdProduct = createProduct();
+        Product createdProduct = productSteps.createProduct();
         Product retrievedProduct = productService.getProduct(createdProduct.getId());
 
         assertThat(retrievedProduct, notNullValue());
@@ -82,7 +67,7 @@ public class ProductServiceIntegrationTests {
 
     @Test
     public void testUpdateProduct_whenValidRequest_thenReturnUpdatedProduct(){
-        Product createdProduct = createProduct();
+        Product createdProduct = productSteps.createProduct();
         SaveProductRequest request = new SaveProductRequest();
         request.setName(createdProduct.getName() + " was updated");
         request.setPrice(createdProduct.getPrice() + 25);
