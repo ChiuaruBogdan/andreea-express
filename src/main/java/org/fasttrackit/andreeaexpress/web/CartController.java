@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/carts")
@@ -33,6 +34,14 @@ public class CartController {
 
         CartResponse cart = cartService.getCart(customerId);
 
-        return new ResponseEntity<>(cart,HttpStatus.OK);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
     }
+
+    //    trying to create delete option
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCart(@PathVariable("id") long id) {
+        cartService.deleteCart(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

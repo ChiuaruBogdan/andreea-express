@@ -94,4 +94,6 @@ public class ProductService {
         LOGGER.info("Deleting product {}", id);
         productRepository.deleteById(id);
     }
+
+
 }
